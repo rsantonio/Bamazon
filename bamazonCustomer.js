@@ -1,59 +1,75 @@
-// Pull in required dependencies
-var inquirer = require("inquirer");
 var mysql = require("mysql");
+
+var inquirer = require("inquirer");
+
 var table = require("console.table");
 
-// Define the MySQL connection parameters
+//sql database connection
+
 var connection = mysql.createConnection({
+
 	host: "localhost",
 	port: 3306,
 
-	// Your username
 	user: "root",
 
-	// Your password
-	password: "DevAliasUr@2017",
-	database: "bamazon"
+	password: "",
+	database: "bamazon_DB"
+
 });
+
+//connetcs server and database
 
 connection.connect(function(err) {
-	if (err) throw err;
 
-	console.log("connected as id " + connection.threadId);
+	if(err) throw err;
 
-	appLaunch();
+	launchBamazon();
 
 });
 
-//display inventory so items will be displayed to user
+//server starting page
+function launchBamazon() {
+	console.log("\nWelcome to Bamazon! Meeting all your shopping needs.\n");
 
-function showInventory() {
+	inquirer.prompt({
 
-	queryStr = "SELECT * FROM products";
-
-	connection.query(queryStr, function(err, data) {
-
-		if(err) throw err;
-
-		console.log("Current Inventory:");
-
-		console.log("-----------------\n");
-
-		var output = "";
-
-		for (var i = 0; i <data.length; i++) {
-			output = "";
-			output += 'Item ID: ' + data[i].item_id + '  //  ';
-			output += 'Product Name: ' + data[i].product_name + '  //  ';
-			output += 'Department: ' + data[i].department_name + '  //  ';
-			output += 'Price: $' + data[i].price + '\n';
-
-			console.log(output);
+		name: "enter",
+		type: "confirm",
+		message: "Would you like to see our inventory?"
+	}).then(function(answer) {
+		if(answer.enter) {
+			displayInventory();
+		} else {
+			endApp();
 		}
 
-		promptPurchase();
-	})
+	});
 
+}
+
+function endApp() {
+	console.log("\nThank you for using Bamazon!\n");
+	connection.end();
+}
+
+function displayInventory() {
+
+	connection.query("SELECT * FROM products", function(err, res) {
+			if(err) throw err;
+			console.log("Current inventory");
+
+			var inventory = [];
+
+			for (var i = 0; i < res.length; i++) {
+				inventory.push([res[i].item_id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity]);
+			}
+
+			var columns = ["Item ID", "Name", "Department", "Price", "Availability"];
+
+			console.table(columns, inventory);
+
+	});
 }
 
 //user will input what they want to purchase
@@ -87,24 +103,24 @@ function promptPurchase() {
 			if (err) throw err;
 
 			if (data.length === 0) {
-				showInventory();
+				displayInventory();
 
 			} else {
 
 				var productInfo = data[0];
 
-				if (quantity <= productData.stock_quantity) {
+				if (quantity <= productInfo.stock_quantity) {
 					console.log("Congratulations, the product you requested is in stock! Placing order!");
 
 					// Construct the updating query string
-					var updateQueryStr = "UPDATE products SET stock_quantity = " + (productData.stock_quantity - quantity) + " WHERE item_id = " + item;
+					var updateQueryStr = "UPDATE products SET stock_quantity = " + (productInfo.stock_quantity - quantity) + " WHERE item_id = " + item;
 					// console.log('updateQueryStr = ' + updateQueryStr);
 
 					// Update the inventory
 					connection.query(updateQueryStr, function(err, data) {
 						if (err) throw err;
 
-						console.log("Your oder has been placed! Your total is $" + productData.price * quantity);
+						console.log("Your oder has been placed! Your total is $" + productInfo.price * quantity);
 						console.log("Thank you for shopping with us!");
 						console.log("\n---------------------------------------------------------------------\n");
 
@@ -116,7 +132,7 @@ function promptPurchase() {
 					console.log("Please modify your order.");
 					console.log("\n---------------------------------------------------------------------\n");
 
-					showInventory();
+					displayInventory();
 
 				}
 
@@ -125,14 +141,5 @@ function promptPurchase() {
 	})
 
 }
-
-function appLaunch() {
-
-	console.log("\nWelcome to Bamazon! Please browse our inventory and make a purchase.");
-
-	showInventory();
-}
-
-
 
 
