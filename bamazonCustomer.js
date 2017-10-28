@@ -13,7 +13,7 @@ var connection = mysql.createConnection({
 
 	user: "root",
 
-	password: "",
+	password: "DevAliasUr@2017",
 	database: "bamazon_DB"
 
 });
@@ -40,6 +40,7 @@ function launchBamazon() {
 	}).then(function(answer) {
 		if(answer.enter) {
 			displayInventory();
+
 		} else {
 			endApp();
 		}
@@ -70,6 +71,8 @@ function displayInventory() {
 			console.table(columns, inventory);
 
 	});
+
+	promptPurchase();
 }
 
 //user will input what they want to purchase
@@ -96,7 +99,7 @@ function promptPurchase() {
 		var amount = input.quantity;
 
 
-		var queryStr = "SELECT * FROM products WHERE?";
+		var queryStr = "SELECT * FROM products";
 
 		connection.query(queryStr, {item_id: item}, function(err, data) {
 
@@ -113,7 +116,7 @@ function promptPurchase() {
 					console.log("Congratulations, the product you requested is in stock! Placing order!");
 
 					// Construct the updating query string
-					var updateQueryStr = "UPDATE products SET stock_quantity = " + (productInfo.stock_quantity - quantity) + " WHERE item_id = " + item;
+					var updateQueryStr = "UPDATE products SET stock_quantity = " + (productInfo.stock_quantity - quantity) + " item_id = " + item;
 					// console.log('updateQueryStr = ' + updateQueryStr);
 
 					// Update the inventory

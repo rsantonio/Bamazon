@@ -14,34 +14,34 @@ CREATE TABLE products (
 );
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("Ruffles", "Groceries", 3.95, 500)
+VALUES ("Ruffles", "Groceries", 3.95, 500);
+
+INSERT iNTO products (product_name, department_name, price, stock_quantity)
+VALUES ("Beef Jerky", "Groceries", 5.95, 300);
+INSERT INTO products (product_name, department_name, price, stock_quantity)
+
+VALUES ("Toilet Paper", "Toiletries", 4.85, 550);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("Beef Jerky", "Groceries", 5.95, 300)
+VALUES ("Dove Shampoo", "Toiletries", 5.75, 200);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("Toilet Paper", "Toiletries", 4.85, 550)
+VALUES ("Pens", "School Supplies", 2.75, 100);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("Dove Shampoo", "Toiletries", 5.75, 200)
+VALUES ("Pillows", "Bedroom", 10.75, 245);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("Pens", "School Supplies", 2.75, 100)
+VALUES ("Towels", "Bathroom", 12.75, 135);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("Pillows", "Bedroom", 10.75, 245)
+VALUES ("Monopoly", "Toys", 23.75, 195);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("Towels", "Bathroom", 12.75, 135)
+VALUES ("PS4", "Electronics", 563.75, 95);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("Monopoly", "Toys", 23.75, 195)
-
-INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("PS4", "Electronics", 563.75, 95)
-
-INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("Kindle", "Electronics", 183.25, 55)
+VALUES ("Kindle", "Electronics", 183.25, 55);
 
 
 
